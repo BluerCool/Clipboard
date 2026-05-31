@@ -52,6 +52,11 @@ void noteText() {
 
 void notePipe() {
     std::string content(pipedInContent());
+    // Strip trailing newlines and carriage returns
+    while (!content.empty() && 
+           (content.back() == '\n' || content.back() == '\r')) {
+        content.pop_back();
+    }
     writeToFile(path.metadata.notes, content);
     if (output_silent || confirmation_silent) return;
     stopIndicator();
