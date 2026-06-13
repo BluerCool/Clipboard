@@ -158,8 +158,10 @@ jobs:
 
       - name: Run a script
         run: |
+          vcpkg install openssl:x64-windows
+          $env:PATH = "$env:VCPKG_ROOT;$env:PATH"
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
           cmake --build . --config Release -j 3
       - uses: actions/upload-artifact@v4
         with:
@@ -176,7 +178,7 @@ jobs:
           vcpkg install openssl:arm64-windows
           $env:PATH = "$env:VCPKG_ROOT;$env:PATH"
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=ARM64
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=ARM64 -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
           cmake --build . --config Release -j 3
       - uses: actions/upload-artifact@v4
         with:
